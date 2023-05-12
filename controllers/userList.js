@@ -71,7 +71,7 @@ export const editUser = (req, res) => {
 	const userId = req.params.id
 	const {age, name} = req.body
 
-	userList = userList.map(function(user) {
+	userList = userList.map(user => {
 		if (user.id === Number(userId)) {
 			return {
 				name,
