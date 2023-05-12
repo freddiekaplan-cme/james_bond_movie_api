@@ -1,4 +1,4 @@
-export let apiKeyList = ["5", "7"];
+export let apiKeyList = ["00000000", "12345678"];
 
 export const createKey = (req, res) => {
 	
@@ -30,9 +30,9 @@ export const createKey = (req, res) => {
 			apiKeyList.push(newKey);
 		}
 	}
+	
 	createNewKey();
 	
-	console.log(newKey);
 
 	res.json(apiKeyList);
 }
