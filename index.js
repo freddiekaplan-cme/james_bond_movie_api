@@ -1,7 +1,7 @@
 import express from "express";
 import useRouter from "./routes/users.js";
 import cors from "cors";
-import apiKeyList from "./configs/apiKeyList.js"
+import { apiKeyList } from "./configs/apiKeyList.js"
 
 const app = express();
 const port = 3007;
