@@ -19,7 +19,7 @@ const authenticateApiKey = (req, res, next) => {
 	const apiKey = req.query.apiKey;
 	console.log(req.query);
 	
-const validApiKey = apiKeyList.find((key) => key === apiKey);
+const validApiKey = apiKeyList.find((keyObj) => keyObj.key === apiKey);
 
 	if (!apiKey) {
 		return res
@@ -27,7 +27,7 @@ const validApiKey = apiKeyList.find((key) => key === apiKey);
 		.json({ message: "Unauthorized. Missing API key." + statusMsg });
 	};
 	
-	if (apiKey !== validApiKey) {
+	if (apiKey !== validApiKey.key) {
 		return res
 		.status(403)
 		.json({ message: "Forbidden. Invalid API key." + statusMsg });

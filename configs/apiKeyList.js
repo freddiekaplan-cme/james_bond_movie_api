@@ -1,4 +1,13 @@
-export let apiKeyList = ["00000000", "12345678"];
+import dateAndTime from "./date-and-time.js";
+
+export let apiKeyList = [
+	{
+		key: "00000000"
+	}, 
+	{
+		key: "12345678"
+	}
+];
 
 export const createKey = (req, res) => {
 	
@@ -18,21 +27,31 @@ export const createKey = (req, res) => {
 	function createNewKey() {
 		const newKey = generateRandomString(8);
 
-		console.log(newKey);
-
-		const findKey = apiKeyList.find(key => key === newKey);
+		const findKey = apiKeyList.find((keyObj) => keyObj.key === newKey);
 		
 		if (findKey) {
-			console.log("Duplicate key found in list! Generating new.");
 			newKey = generateRandomString(8);
 			return createNewKey();
 		} else {
-			apiKeyList.push(newKey);
+			apiKeyList.push({
+				key: newKey,
+				date: dateAndTime
+			});
+			console.log("New API key: " + newKey);
 		}
+		
 	}
-	
 	createNewKey();
-	
+
+	res.json(apiKeyList);
+}
+
+export const deleteKey = (req, res) => {
+	const key = req.params.key;
+
+	apiKeyList = apiKeyList.filter((keys) => {
+		return keys.key !== key;
+	})
 
 	res.json(apiKeyList);
 }
