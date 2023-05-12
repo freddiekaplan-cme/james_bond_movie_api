@@ -1,7 +1,16 @@
 import express from "express";
 import useRouter from "./routes/users.js";
+import cors from "cors";
 
 const app = express();
+const port = 3007;
+const statusMsg = " Get your licens to thrill with an API key. More information in the documentation, README.md.";
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -12,7 +21,7 @@ const authenticateApiKey = (req, res, next) => {
 	if (!apiKey) {
 		return res
 		.status(401)
-		.json({ message: "Inga karaktärer till dig! Din api key saknas." });
+		.json({ message: "Unauthorized. Missing API key." + statusMsg });
 	};
 	
 	const validApiKey = "5";
@@ -20,7 +29,7 @@ const authenticateApiKey = (req, res, next) => {
 	if (apiKey !== validApiKey) {
 		return res
 		.status(403)
-		.json({ message: "Invalid API key" });
+		.json({ message: "Forbidden. Invalid API key." + statusMsg });
 	};
 	
 	next();
@@ -30,8 +39,8 @@ app.use((req, res, next) => {
 	authenticateApiKey(req, res, next);
 });
 
-app.use("/api", useRouter);
+app.use("/bond", useRouter);
 
-app.listen(3000, () => {
-	console.log('Listening on port 3000 😎');
-});
+app.listen(port, () => {
+	console.log(`Listening on port ${port}`);
+  });
