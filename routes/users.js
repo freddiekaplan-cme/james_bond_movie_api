@@ -1,14 +1,14 @@
 import express, { Router } from "express"
-import { getUsers, createUser, getOneUser, deleteUser, editUser} from "../controllers/userList.js"
+import { getMovies, createMovie, getOneMovie, deleteMovie, editMovie} from "../controllers/userList.js"
 import { createKey, deleteKey } from "../configs/apiKeyList.js"
 
 const router = express.Router()
 
-router.get("/users", getUsers)
-router.post("/users", createUser)
-router.get("/users/:id", getOneUser)
-router.delete("/users/:id", deleteUser)
-router.put("/users/:id", editUser)
+router.get("/bond", getMovies)
+router.post("/bond", createMovie)
+router.get("/bond/:id", getOneMovie)
+router.delete("/bond/:id", deleteMovie)
+router.put("/bond/:id", editMovie)
 
 router.post("/keys", createKey)
 router.delete("/keys/:key", deleteKey)

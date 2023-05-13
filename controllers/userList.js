@@ -1,77 +1,98 @@
-let userList = [
-	{
-		name: "Freddie",
-		age: 42,
-		id: 1
-	},
-	{
-		name: "Test",
-		age: 4,
-		id: 4
-	},
-	{
-		name: "Annelie",
-		age: 41,
-		id: 2
-	}
-]
+// let userList = [
+// 	{
+// 		name: "Freddie",
+// 		age: 42,
+// 		id: 1
+// 	},
+// 	{
+// 		name: "Test",
+// 		age: 4,
+// 		id: 4
+// 	},
+// 	{
+// 		name: "Annelie",
+// 		age: 41,
+// 		id: 2
+// 	}
+// ]
 
-let newId = userList.length + 1
+import { bondData } from "./bondData";
 
-export const getUsers = (req, res) => {
-	res.json(userList)
+let bondMovies = bondData;
+
+let newId = bondMovies.length + 1
+
+export const getMovies = (req, res) => {
+	res.json(bondMovies)
 }
 
-export const createUser = (req, res) => {
+export const createMovie = (req, res) => {
 	const { name, age } = req.body
 	
-	function createUserId() {
-		const findId = userList.find(id => id.id === newId)
+	function createMovieId() {
+		const findId = bondMovies.find(id => id.id === newId)
 		
 		if (findId) {
 			newId++
 			console.log("Id found in list!")
-			return createUserId()
+			return createMovieId()
 		} else {
-			userList.push({
-				name: name,
-				age: age,
-				id: newId
+			bondMovies.push({
+				title: Title,
+				year: Year,
+				rated: Rated,
+				released: Released,
+				runtime: Runtime,
+				genre: Genre,
+				director: Director,
+				writer: Writer,
+				actors: Actors,
+				plot: Plot,
+				language: Language,
+				country: Country,
+				awards: Awards,
+				poster: Poster,
+				imdbid: imdbID,
+				type: Type,
+				dvd: DVD,
+				boxoffice: BoxOffice,
+				production: Production,
+				website: Website 
 			})
 		}
 	}
-	createUserId()
+	createMovieId()
 	
 	console.log(name, age, newId)
 
-	res.json(userList)
+	res.json(bondMovies)
 }
 
-export const getOneUser = (req, res) => {
+export const getOneMovie = (req, res) => {
 	const userId = req.params.id
 
-	const user = userList.find(user => {
+	const user = bondMovies.find(user => {
 		return user.id === Number(userId)
 	})
 
 	res.json(user)
 }
 
-export const deleteUser = (req, res) => {
+export const deleteMovie = (req, res) => {
 	const userId = req.params.id
 
-	userList = userList.filter(user => {
+	bondMovies = bondMovies.filter(user => {
 		return user.id !== Number(userId)
 	})
 
-	res.json(userList)
+	res.json(bondMovies)
 }
 
-export const editUser = (req, res) => {
+export const editMovie = (req, res) => {
 	const userId = req.params.id
 	const {age, name} = req.body
 
-	userList = userList.map(user => {
+	bondMovies = bondMovies.map(user => {
 		if (user.id === Number(userId)) {
 			return {
 				name,
@@ -83,5 +104,5 @@ export const editUser = (req, res) => {
 		return user
 	})
 
-	res.json(userList)
+	res.json(bondMovies)
 }
