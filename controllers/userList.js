@@ -18,7 +18,9 @@
 
 import { bondData } from "./bondData";
 
-let bondMovies = bondData;
+let bondMovies = bondData
+  .filter((movie) => movie.imdbID !== "N/A")
+  .map((movie) => ({ id: movie.imdbID }));
 
 let newId = bondMovies.length + 1
 
@@ -27,43 +29,43 @@ export const getMovies = (req, res) => {
 }
 
 export const createMovie = (req, res) => {
-	const { name, age } = req.body
+	const { title, year, rated, released, runtime, genre, director, writer, actors, plot, language, country, awards, poster, imdbid, type, dvd, boxoffice, production, website } = req.body
 	
 	function createMovieId() {
 		const findId = bondMovies.find(id => id.id === newId)
 		
 		if (findId) {
 			newId++
-			console.log("Id found in list!")
+			console.log("Id found in list! Running again.")
 			return createMovieId()
 		} else {
 			bondMovies.push({
-				title: Title,
-				year: Year,
-				rated: Rated,
-				released: Released,
-				runtime: Runtime,
-				genre: Genre,
-				director: Director,
-				writer: Writer,
-				actors: Actors,
-				plot: Plot,
-				language: Language,
-				country: Country,
-				awards: Awards,
-				poster: Poster,
-				imdbid: imdbID,
-				type: Type,
-				dvd: DVD,
-				boxoffice: BoxOffice,
-				production: Production,
-				website: Website 
+				Id: newId,
+				Title: title,
+				Year: year,
+				Rated: rated,
+				Released: released,
+				Runtime: runtime,
+				Genre: genre,
+				Director: director,
+				Writer: writer,
+				Actors: actors,
+				Plot: plot,
+				Language: language,
+				Country: country,
+				Awards: awards,
+				Poster: poster,
+				imdbID: imdbid,
+				Type: type,
+				DVD: dvd,
+				BoxOffice: boxoffice,
+				Production: production,
+				Website: website
 			})
+			console.log("Added with id " + newId)
 		}
 	}
 	createMovieId()
-	
-	console.log(name, age, newId)
 
 	res.json(bondMovies)
 }
