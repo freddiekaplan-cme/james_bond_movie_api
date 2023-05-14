@@ -1,5 +1,5 @@
 import express from "express";
-import useRouter from "./routes/users.js";
+import useRouter from "./routes/movies.js";
 import cors from "cors";
 import { apiKeyList } from "./configs/apiKeyList.js"
 

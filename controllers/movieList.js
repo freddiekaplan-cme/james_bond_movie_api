@@ -1,28 +1,20 @@
-// let userList = [
-// 	{
-// 		name: "Freddie",
-// 		age: 42,
-// 		id: 1
-// 	},
-// 	{
-// 		name: "Test",
-// 		age: 4,
-// 		id: 4
-// 	},
-// 	{
-// 		name: "Annelie",
-// 		age: 41,
-// 		id: 2
-// 	}
-// ]
-
-import { bondData } from "./bondData";
+import { bondData } from "./bondData.js";
 
 let bondMovies = bondData
-  .filter((movie) => movie.imdbID !== "N/A")
-  .map((movie) => ({ id: movie.imdbID }));
-
 let newId = bondMovies.length + 1
+
+function updateBondMovies() {
+	bondMovies = bondMovies
+	  .map((movie) => {
+		if (movie.imdbID !== "N/A" && movie.imdbID !== null && movie.imdbID !== undefined) {
+		  return { Id: movie.imdbID, ...movie };
+		} else {
+		  return { Id: String(newId), ...movie };
+		}
+	  });
+}
+updateBondMovies();
+  
 
 export const getMovies = (req, res) => {
 	res.json(bondMovies)
