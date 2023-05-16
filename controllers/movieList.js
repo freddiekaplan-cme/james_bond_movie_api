@@ -5,23 +5,30 @@ let newId = bondMovies.length + 1
 
 function updateBondMovies() {
 	bondMovies = bondMovies
-	  .map((movie) => {
+	.map((movie) => {
+		const year = Number(movie.Year) || "N/A"
+
 		if (movie.imdbID !== "N/A" && movie.imdbID !== null && movie.imdbID !== undefined) {
-		  return { Id: movie.imdbID, ...movie };
+			console.log(year)
+			return { Id: movie.imdbID, Year: year, ...movie };
 		} else {
-		  return { Id: newId.toString(), ...movie };
+			return { Id: newId.toString(), Year: year, ...movie };
 		}
-	  });
+	});
+	console.log(bondMovies[0])
 }
 updateBondMovies();
 
 export const getMovies = (req, res) => {
+	res.setHeader('Content-Type', 'application/json');
 	res.json(bondMovies)
 }
 
 function convertToString(inputValues) {
 	Object.keys(inputValues).forEach((key) => {
-		inputValues[key] = inputValues[key]?.toString() || "N/A";
+		if (key !== "Year") {
+			inputValues[key] = inputValues[key]?.toString() || "N/A";
+		}
 	})
 }
 
@@ -31,9 +38,6 @@ export const createMovie = (req, res) => {
 	function createMovieId() {
 		const findId = bondMovies.find(id => id.Id === newId.toString())
 
-		console.log(bondMovies.Id)
-		console.log(newId)
-		
 		if (findId) {
 			newId++
 			return createMovieId()
@@ -74,6 +78,7 @@ export const createMovie = (req, res) => {
 	}
 	createMovieId()
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(bondMovies)
 }
 
@@ -84,6 +89,7 @@ export const getOneMovie = (req, res) => {
 		return movie.Id === chosenMovieId
 	})
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(chosenMovie)
 }
 
@@ -94,6 +100,7 @@ export const deleteMovie = (req, res) => {
 		return movie.Id !== chosenMovieId
 	})
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(bondMovies)
 }
 
@@ -135,5 +142,6 @@ export const editMovie = (req, res) => {
 		return movie
 	})
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(bondMovies)
 }

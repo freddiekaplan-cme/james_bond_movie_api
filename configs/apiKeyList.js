@@ -43,6 +43,7 @@ export const createKey = (req, res) => {
 	}
 	createNewKey();
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(apiKeyList);
 }
 
@@ -53,5 +54,6 @@ export const deleteKey = (req, res) => {
 		return keys.key !== key;
 	})
 
+	res.setHeader('Content-Type', 'application/json');
 	res.json(apiKeyList);
 }
