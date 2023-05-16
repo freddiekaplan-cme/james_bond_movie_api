@@ -9,29 +9,36 @@ function updateBondMovies() {
 		if (movie.imdbID !== "N/A" && movie.imdbID !== null && movie.imdbID !== undefined) {
 		  return { Id: movie.imdbID, ...movie };
 		} else {
-		  return { Id: String(newId), ...movie };
+		  return { Id: newId.toString(), ...movie };
 		}
 	  });
 }
 updateBondMovies();
-  
 
 export const getMovies = (req, res) => {
 	res.json(bondMovies)
+}
+
+function convertToString(inputValues) {
+	Object.keys(inputValues).forEach((key) => {
+		inputValues[key] = inputValues[key]?.toString() || "N/A";
+	})
 }
 
 export const createMovie = (req, res) => {
 	const { title, year, rated, released, runtime, genre, director, writer, actors, plot, language, country, awards, poster, imdbid, type, dvd, boxoffice, production, website } = req.body
 	
 	function createMovieId() {
-		const findId = bondMovies.find(id => id.id === newId)
+		const findId = bondMovies.find(id => id.Id === newId.toString())
+
+		console.log(bondMovies.Id)
+		console.log(newId)
 		
 		if (findId) {
 			newId++
-			console.log("Id found in list! Running again.")
 			return createMovieId()
 		} else {
-			bondMovies.push({
+			const inputValues = {
 				Id: newId,
 				Title: title,
 				Year: year,
@@ -53,8 +60,16 @@ export const createMovie = (req, res) => {
 				BoxOffice: boxoffice,
 				Production: production,
 				Website: website
-			})
-			console.log("Added with id " + newId)
+			}
+				
+				// Object.keys(inputValues).forEach((key) => {
+					// 	inputValues[key] = inputValues[key]?.toString() || "N/A";
+					// })
+					convertToString(inputValues)
+					
+					bondMovies.push(inputValues)
+					
+					console.log("Added with id " + newId)
 		}
 	}
 	createMovieId()
@@ -63,39 +78,61 @@ export const createMovie = (req, res) => {
 }
 
 export const getOneMovie = (req, res) => {
-	const userId = req.params.id
-
-	const user = bondMovies.find(user => {
-		return user.id === Number(userId)
+	const chosenMovieId = req.params.id
+	
+	const chosenMovie = bondMovies.find(movie => {
+		return movie.Id === chosenMovieId
 	})
 
-	res.json(user)
+	res.json(chosenMovie)
 }
 
 export const deleteMovie = (req, res) => {
-	const userId = req.params.id
+	const chosenMovieId = req.params.id
 
-	bondMovies = bondMovies.filter(user => {
-		return user.id !== Number(userId)
+	bondMovies = bondMovies.filter(movie => {
+		return movie.Id !== chosenMovieId
 	})
 
 	res.json(bondMovies)
 }
 
 export const editMovie = (req, res) => {
-	const userId = req.params.id
-	const {age, name} = req.body
+	const movieId = req.params.id
+	const { title, year, rated, released, runtime, genre, director, writer, actors, plot, language, country, awards, poster, imdbid, type, dvd, boxoffice, production, website } = req.body
 
-	bondMovies = bondMovies.map(user => {
-		if (user.id === Number(userId)) {
-			return {
-				name,
-				age,
-				id: user.id
-			}
+	bondMovies = bondMovies.map(movie => {
+		if (movie.Id === movieId) {
+			// return {
+				const inputValues = {
+					...movie,
+					Title: title || movie.Title,
+					Year: year || movie.Year,
+					Rated: rated || movie.Rated,
+					Released: released || movie.Released,
+					Runtime: runtime || movie.Runtime,
+					Genre: genre || movie.Genre,
+					Director: director || movie.Director,
+					Writer: writer || movie.Writer,
+					Actors: actors || movie.Actors,
+					Plot: plot || movie.Plot,
+					Language: language || movie.Language,
+					Country: country || movie.Country,
+					Awards: awards || movie.Awards,
+					Poster: poster || movie.Poster,
+					imdbID: imdbid || movie.imdbID,
+					Type: type || movie.Type,
+					DVD: dvd || movie.DVD,
+					BoxOffice: boxoffice || movie.BoxOffice,
+					Production: production || movie.Production,
+					Website: website || movie.Website
+				}
+				convertToString(inputValues)
+				return inputValues
+
 		}
 
-		return user
+		return movie
 	})
 
 	res.json(bondMovies)
