@@ -35,6 +35,7 @@ Example: `http://localhost:3007/bond/tt6110504`
 
 Method: `POST`
 URL: `/bond/:id`
+Example: `http://localhost:3007/bond/`
 Body: 
 ```
 {
@@ -60,12 +61,12 @@ Body:
 }
 ```
 (*) Are required
-Example: `http://localhost:3007/bond/`
 
 ### Update a movie  using ID
 
 Method: `PUT`
 URL: `/bond/:id`
+Example: `http://localhost:3007/bond/tt6110504`
 Body: 
 ```
 {
@@ -90,7 +91,6 @@ Body:
 	"Website": "URL to movie website"
 }
 ```
-Example: `http://localhost:3007/bond/tt6110504`
 
 ### Delete a movie using ID
 

@@ -1,4 +1,4 @@
-import dateAndTime from "./date-and-time.js";
+import { dateAndTime } from "./date-and-time.js";
 
 export let apiKeyList = [
 	{
