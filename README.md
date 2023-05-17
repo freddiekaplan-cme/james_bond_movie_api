@@ -23,8 +23,8 @@ That means you should be able to acces the server here:
 
 ### List all movies
 
-Method: `GET`,
-URL: `/bond`,
+Method: `GET`
+URL: `/bond`
 Example: `http://localhost:3007/bond/`
 
 ### List one movie
