@@ -1,27 +1,31 @@
 import { bondData } from "./bondData.js";
 import { fullYear } from "../configs/date-and-time.js";
 
-let bondMovies = bondData
-let newId = bondMovies.length + 1
-let createdId = ""
-const requiredValues = "Title, year, released and genre must be filled in."
-const yearMustBeNumber = "Year must be a number, YYYY, set between James Bond's creation in 1953 and next year."
+let bondMovies = bondData;
+let newId = bondMovies.length + 1;
+let createdId = "";
+const requiredValues = "Title, year, released and genre must be filled in.";
+const yearMustBeNumber =
+	"Year must be a number, YYYY, set between James Bond's creation in 1953 and next year.";
 
 function createId() {
-	createdId = 70000 + newId
-	createdId = createdId.toString()
-	createdId = "tt00" + createdId
+	createdId = 70000 + newId;
+	createdId = createdId.toString();
+	createdId = "tt00" + createdId;
 }
 
 function updateBondMovies() {
-	bondMovies = bondMovies
-	.map((movie) => {
-		const year = Number(movie.Year) || "N/A"
+	bondMovies = bondMovies.map((movie) => {
+		const year = Number(movie.Year) || "N/A";
 
-		if (movie.imdbID !== "N/A" && movie.imdbID !== null && movie.imdbID !== undefined) {
+		if (
+			movie.imdbID !== "N/A" &&
+			movie.imdbID !== null &&
+			movie.imdbID !== undefined
+		) {
 			return { Id: movie.imdbID, ...movie, Year: year };
 		} else {
-			createId()
+			createId();
 			return { Id: createdId, ...movie, Year: year };
 		}
 	});
@@ -29,103 +33,138 @@ function updateBondMovies() {
 updateBondMovies();
 
 export const getMovies = (req, res) => {
-	res.setHeader('Content-Type', 'application/json');
-	res.json(bondMovies)
-}
+	res.setHeader("Content-Type", "application/json");
+	res.json(bondMovies);
+};
 
 export const createMovie = (req, res) => {
-	const { title, year, rated, released, runtime, genre, director, writer, actors, plot, language, country, awards, poster, imdbid, type, dvd, boxoffice, production, website } = req.body
+	const {
+		title,
+		year,
+		rated,
+		released,
+		runtime,
+		genre,
+		director,
+		writer,
+		actors,
+		plot,
+		language,
+		country,
+		awards,
+		poster,
+		imdbid,
+		type,
+		dvd,
+		boxoffice,
+		production,
+		website,
+	} = req.body;
 
 	if (title && year && released && genre) {
 		if (isNaN(year) || year < 1953 || year > fullYear + 1) {
-			console.log(yearMustBeNumber)
-			return res
-			.json({ message: yearMustBeNumber });
+			console.log(yearMustBeNumber);
+			return res.json({ message: yearMustBeNumber });
 		} else {
 			function createMovieId() {
-				const findId = bondMovies.find(id => id.Id === createdId)
-		
+				const findId = bondMovies.find((id) => id.Id === createdId);
+
 				if (findId) {
-					newId++
-					createId()
-					return createMovieId()
+					newId++;
+					createId();
+					return createMovieId();
 				} else {
-					bondMovies.push(
-						{
-							Id: createdId,
-							Title: title,
-							Year: year,
-							Rated: rated,
-							Released: released,
-							Runtime: runtime,
-							Genre: genre,
-							Director: director,
-							Writer: writer,
-							Actors: actors,
-							Plot: plot,
-							Language: language,
-							Country: country,
-							Awards: awards,
-							Poster: poster,
-							imdbID: imdbid,
-							Type: type,
-							DVD: dvd,
-							BoxOffice: boxoffice,
-							Production: production,
-							Website: website
-						}
-					)
-				
-					console.log("Added with id " + createdId)
+					bondMovies.push({
+						Id: createdId,
+						Title: title,
+						Year: year,
+						Rated: rated,
+						Released: released,
+						Runtime: runtime,
+						Genre: genre,
+						Director: director,
+						Writer: writer,
+						Actors: actors,
+						Plot: plot,
+						Language: language,
+						Country: country,
+						Awards: awards,
+						Poster: poster,
+						imdbID: imdbid,
+						Type: type,
+						DVD: dvd,
+						BoxOffice: boxoffice,
+						Production: production,
+						Website: website,
+					});
+
+					console.log("Added with id " + createdId);
 				}
 			}
-			createMovieId()
+			createMovieId();
 		}
-	
-	res.setHeader('Content-Type', 'application/json');
-	res.json(bondMovies)
-	
+
+		res.setHeader("Content-Type", "application/json");
+		res.json(bondMovies);
 	} else {
-		console.log(requiredValues)
-		return res
-		.json({ message: requiredValues });
+		console.log(requiredValues);
+		return res.json({ message: requiredValues });
 	}
-}
+};
 
 export const getOneMovie = (req, res) => {
-			const chosenMovieId = req.params.id
-			
-			const chosenMovie = bondMovies.find(movie => {
-				return movie.Id === chosenMovieId
-			})
-			
-			res.setHeader('Content-Type', 'application/json');
-			res.json(chosenMovie)
-		}
-		
-		export const deleteMovie = (req, res) => {
-			const chosenMovieId = req.params.id
-			
-			bondMovies = bondMovies.filter(movie => {
-		return movie.Id !== chosenMovieId
-	})
-	
-	res.setHeader('Content-Type', 'application/json');
-	res.json(bondMovies)
-}
+	const chosenMovieId = req.params.id;
+
+	const chosenMovie = bondMovies.find((movie) => {
+		return movie.Id === chosenMovieId;
+	});
+
+	res.setHeader("Content-Type", "application/json");
+	res.json(chosenMovie);
+};
+
+export const deleteMovie = (req, res) => {
+	const chosenMovieId = req.params.id;
+
+	bondMovies = bondMovies.filter((movie) => {
+		return movie.Id !== chosenMovieId;
+	});
+
+	res.setHeader("Content-Type", "application/json");
+	res.json(bondMovies);
+};
 
 export const editMovie = (req, res) => {
-	const movieId = req.params.id
-	const { title, year, rated, released, runtime, genre, director, writer, actors, plot, language, country, awards, poster, imdbid, type, dvd, boxoffice, production, website } = req.body
+	const movieId = req.params.id;
+	const {
+		title,
+		year,
+		rated,
+		released,
+		runtime,
+		genre,
+		director,
+		writer,
+		actors,
+		plot,
+		language,
+		country,
+		awards,
+		poster,
+		imdbid,
+		type,
+		dvd,
+		boxoffice,
+		production,
+		website,
+	} = req.body;
 
 	if (title && year && released && genre) {
 		if (isNaN(year) || year < 1953 || year > fullYear + 1) {
-			console.log(yearMustBeNumber)
-			return res
-			.json({ message: yearMustBeNumber });
+			console.log(yearMustBeNumber);
+			return res.json({ message: yearMustBeNumber });
 		} else {
-
-			bondMovies = bondMovies.map(movie => {
+			bondMovies = bondMovies.map((movie) => {
 				if (movie.Id === movieId) {
 					return {
 						...movie,
@@ -148,20 +187,18 @@ export const editMovie = (req, res) => {
 						DVD: dvd || movie.DVD,
 						BoxOffice: boxoffice || movie.BoxOffice,
 						Production: production || movie.Production,
-						Website: website || movie.Website
-					}
+						Website: website || movie.Website,
+					};
 				}
 
-				return movie
-			})
+				return movie;
+			});
 		}
 
-	res.setHeader('Content-Type', 'application/json');
-	res.json(bondMovies)
-	
+		res.setHeader("Content-Type", "application/json");
+		res.json(bondMovies);
 	} else {
-		console.log(requiredValues)
-		return res
-		.json({ message: requiredValues });
+		console.log(requiredValues);
+		return res.json({ message: requiredValues });
 	}
-}
+};
