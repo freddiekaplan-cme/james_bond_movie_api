@@ -1,8 +1,8 @@
 import express from "express";
 import useRouter from "./routes/movies.js";
 import apiKeyRouter from "./routes/apiKeys.js"
-import cors from "cors";
 import { apiKeyList } from "./configs/apiKeyList.js"
+import cors from "cors";
 
 const app = express();
 const port = 3007;

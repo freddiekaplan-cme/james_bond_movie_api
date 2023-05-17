@@ -50,32 +50,32 @@ export const createMovie = (req, res) => {
 					createId()
 					return createMovieId()
 				} else {
-					const inputValues = {
-						Id: createdId,
-						Title: title,
-						Year: year,
-						Rated: rated,
-						Released: released,
-						Runtime: runtime,
-						Genre: genre,
-						Director: director,
-						Writer: writer,
-						Actors: actors,
-						Plot: plot,
-						Language: language,
-						Country: country,
-						Awards: awards,
-						Poster: poster,
-						imdbID: imdbid,
-						Type: type,
-						DVD: dvd,
-						BoxOffice: boxoffice,
-						Production: production,
-						Website: website
-					}
-					
-					bondMovies.push(inputValues)
-					
+					bondMovies.push(
+						{
+							Id: createdId,
+							Title: title,
+							Year: year,
+							Rated: rated,
+							Released: released,
+							Runtime: runtime,
+							Genre: genre,
+							Director: director,
+							Writer: writer,
+							Actors: actors,
+							Plot: plot,
+							Language: language,
+							Country: country,
+							Awards: awards,
+							Poster: poster,
+							imdbID: imdbid,
+							Type: type,
+							DVD: dvd,
+							BoxOffice: boxoffice,
+							Production: production,
+							Website: website
+						}
+					)
+				
 					console.log("Added with id " + createdId)
 				}
 			}
@@ -127,33 +127,29 @@ export const editMovie = (req, res) => {
 
 			bondMovies = bondMovies.map(movie => {
 				if (movie.Id === movieId) {
-					// return {
-						const inputValues = {
-							...movie,
-							Title: title || movie.Title,
-							Year: year || movie.Year,
-							Rated: rated || movie.Rated,
-							Released: released || movie.Released,
-							Runtime: runtime || movie.Runtime,
-							Genre: genre || movie.Genre,
-							Director: director || movie.Director,
-							Writer: writer || movie.Writer,
-							Actors: actors || movie.Actors,
-							Plot: plot || movie.Plot,
-							Language: language || movie.Language,
-							Country: country || movie.Country,
-							Awards: awards || movie.Awards,
-							Poster: poster || movie.Poster,
-							imdbID: imdbid || movie.imdbID,
-							Type: type || movie.Type,
-							DVD: dvd || movie.DVD,
-							BoxOffice: boxoffice || movie.BoxOffice,
-							Production: production || movie.Production,
-							Website: website || movie.Website
-						}
-						// convertToString(inputValues)
-						return inputValues
-
+					return {
+						...movie,
+						Title: title || movie.Title,
+						Year: year || movie.Year,
+						Rated: rated || movie.Rated,
+						Released: released || movie.Released,
+						Runtime: runtime || movie.Runtime,
+						Genre: genre || movie.Genre,
+						Director: director || movie.Director,
+						Writer: writer || movie.Writer,
+						Actors: actors || movie.Actors,
+						Plot: plot || movie.Plot,
+						Language: language || movie.Language,
+						Country: country || movie.Country,
+						Awards: awards || movie.Awards,
+						Poster: poster || movie.Poster,
+						imdbID: imdbid || movie.imdbID,
+						Type: type || movie.Type,
+						DVD: dvd || movie.DVD,
+						BoxOffice: boxoffice || movie.BoxOffice,
+						Production: production || movie.Production,
+						Website: website || movie.Website
+					}
 				}
 
 				return movie
