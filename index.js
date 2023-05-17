@@ -1,5 +1,6 @@
 import express from "express";
 import useRouter from "./routes/movies.js";
+import apiKeyRouter from "./routes/apiKeys.js"
 import cors from "cors";
 import { apiKeyList } from "./configs/apiKeyList.js"
 
@@ -12,7 +13,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 
 const authenticateApiKey = (req, res, next) => {
@@ -27,7 +27,6 @@ const authenticateApiKey = (req, res, next) => {
 
 	const validApiKey = apiKeyList.find((keyObj) => keyObj.key === apiKey);
 	
-	// if (apiKey !== validApiKey.key) {
 	if (!validApiKey) {
 		return res
 		.status(403)
@@ -42,6 +41,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/bond", useRouter);
+app.use("/bond", apiKeyRouter);
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
