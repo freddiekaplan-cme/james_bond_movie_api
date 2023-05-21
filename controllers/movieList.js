@@ -1,4 +1,4 @@
-import { bondData } from "..bondData.js";
+import { bondData } from "../bondData.js";
 import { fullYear } from "../configs/date-and-time.js";
 
 let bondMovies = bondData;
@@ -9,9 +9,9 @@ const yearMustBeNumber =
 	"Year must be a number, YYYY, set between James Bond's creation in 1953 and next year.";
 
 function createId() {
-	createdId = 70000 + newId;
-	createdId = createdId.toString();
-	createdId = "tt00" + createdId;
+	const createdId = "tt00" + (70000 + newId).toString();
+	newId++;
+	return createdId;
 }
 
 function updateBondMovies() {
@@ -69,7 +69,6 @@ export const createMovie = (req, res) => {
 				const findId = bondMovies.find((id) => id.Id === createdId);
 
 				if (findId) {
-					newId++;
 					createId();
 					return createMovieId();
 				} else {
@@ -103,7 +102,6 @@ export const createMovie = (req, res) => {
 			createMovieId();
 		}
 
-
 		res.json(bondMovies);
 	} else {
 		console.log(requiredValues);
@@ -118,21 +116,42 @@ export const getOneMovie = (req, res) => {
 		return movie.Id === chosenMovieId;
 	});
 
+	if (!chosenMovie) {
+		return res
+		  .status(404)
+		  .json({ message: "This movie ID is missing in action!" });
+	  }
+
 	res.json(chosenMovie);
 };
 
 export const deleteMovie = (req, res) => {
 	const chosenMovieId = req.params.id;
 
+	const chosenMovie = bondMovies.find((movie) => {
+		return movie.Id === chosenMovieId;
+	});
+
 	bondMovies = bondMovies.filter((movie) => {
 		return movie.Id !== chosenMovieId;
 	});
 
-	res.json(bondMovies);
-};
+	if (!chosenMovie) {
+		return res
+		  .status(404)
+		  .json({ message: "This movie ID is missing in action!" });
+	  }
+
+	res.json({ message: "The movie has been deleted." });
+}; 	
 
 export const editMovie = (req, res) => {
 	const movieId = req.params.id;
+
+	const chosenMovie = bondMovies.find((movie) => {
+		return movie.Id === movieId;
+	});
+
 	const {
 		title,
 		year,
@@ -155,6 +174,12 @@ export const editMovie = (req, res) => {
 		production,
 		website,
 	} = req.body;
+
+	if (!chosenMovie) {
+		return res
+		  .status(404)
+		  .json({ message: "This movie ID is missing in action!" });
+	  }
 
 	if (title && year && released && genre) {
 		if (isNaN(year) || year < 1953 || year > fullYear + 1) {
