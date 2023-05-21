@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { createKey, deleteKey } from "../configs/apiKeyList.js";
+import { createKey, deleteKey } from "../controllers/apiKeyList.js";
 
 const apiKeyRouter = express.Router();
 

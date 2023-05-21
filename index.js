@@ -1,7 +1,7 @@
 import express from "express";
 import useRouter from "./routes/movies.js";
 import apiKeyRouter from "./routes/apiKeys.js";
-import { apiKeyList } from "./configs/apiKeyList.js";
+import { apiKeyList } from "./controllers/apiKeyList.js";
 import cors from "cors";
 
 const app = express();

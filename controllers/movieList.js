@@ -1,4 +1,4 @@
-import { bondData } from "./bondData.js";
+import { bondData } from "..bondData.js";
 import { fullYear } from "../configs/date-and-time.js";
 
 let bondMovies = bondData;
@@ -33,7 +33,6 @@ function updateBondMovies() {
 updateBondMovies();
 
 export const getMovies = (req, res) => {
-	res.setHeader("Content-Type", "application/json");
 	res.json(bondMovies);
 };
 
@@ -104,7 +103,7 @@ export const createMovie = (req, res) => {
 			createMovieId();
 		}
 
-		res.setHeader("Content-Type", "application/json");
+
 		res.json(bondMovies);
 	} else {
 		console.log(requiredValues);
@@ -119,7 +118,6 @@ export const getOneMovie = (req, res) => {
 		return movie.Id === chosenMovieId;
 	});
 
-	res.setHeader("Content-Type", "application/json");
 	res.json(chosenMovie);
 };
 
@@ -130,7 +128,6 @@ export const deleteMovie = (req, res) => {
 		return movie.Id !== chosenMovieId;
 	});
 
-	res.setHeader("Content-Type", "application/json");
 	res.json(bondMovies);
 };
 
@@ -195,7 +192,7 @@ export const editMovie = (req, res) => {
 			});
 		}
 
-		res.setHeader("Content-Type", "application/json");
+
 		res.json(bondMovies);
 	} else {
 		console.log(requiredValues);

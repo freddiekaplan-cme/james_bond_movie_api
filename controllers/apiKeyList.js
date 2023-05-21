@@ -1,4 +1,4 @@
-import { dateAndTime } from "./date-and-time.js";
+import { dateAndTime } from "../configs/date-and-time.js";
 
 export let apiKeyList = [
 	{
@@ -24,7 +24,7 @@ export const createKey = (req, res) => {
 	}
 
 	function createNewKey() {
-		const newKey = generateRandomString(8);
+		let newKey = generateRandomString(8);
 
 		const findKey = apiKeyList.find((keyObj) => keyObj.key === newKey);
 
@@ -41,7 +41,6 @@ export const createKey = (req, res) => {
 	}
 	createNewKey();
 
-	res.setHeader("Content-Type", "application/json");
 	res.json(apiKeyList);
 };
 
@@ -52,6 +51,5 @@ export const deleteKey = (req, res) => {
 		return keys.key !== key;
 	});
 
-	res.setHeader("Content-Type", "application/json");
 	res.json(apiKeyList);
 };
